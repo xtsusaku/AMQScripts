@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AMQ BR Plus (Extended)
 // @namespace    https://github.com/xtsusaku/AMQScripts
-// @version      1.7.3
+// @version      1.7.4
 // @description  Upgrade Battle Royal QOL
 // @description  Alt + O to open the window or when in game click on the icon in the top right.
 // @description  ----- Main Page : -----
@@ -83,7 +83,7 @@ function displayPicked(){
         const brpTable = document.getElementById('brpTable');
         const tr = document.createElement('tr');
         tr.classList.add('brpPickedSong');
-        tr.innerHTML = `<td class="brpPickedName"><i class="fa fa-minus brpRemove" aria-hidden="true"></i><p>${pickedShow[i].name}</p><i class="fa fa-search brpAnisongSearch" aria-hidden="true"></i></td><td>${pickedShow[i].precision}</td><td class="brpPickedANNID" style="text-align: center;">${pickedShow[i].id}</td>`;
+        tr.innerHTML = `<td class="brpPickedName"><i class="fa fa-minus brpRemove" aria-hidden="true"></i><p>${pickedShow[i].name}</p><i class="fa fa-search brpAnisongSearch" aria-hidden="true"></i></td><td class="brpPickedPCS" style="text-align: center;">${pickedShow[i].precision}</td><td class="brpPickedANNID" style="text-align: center;">${pickedShow[i].id}</td>`;
         brpTable.appendChild(tr);
 
         tr.querySelector('.brpRemove').addEventListener('click', function() {
@@ -671,7 +671,7 @@ BattleRoyalContainerEntry.prototype.template = $("#brContainerEntryTemplate").ht
             <table id="brpTable">
                 <tr id="brpTableTop">
                     <th id="brpTableName">Anime Name</th>
-                    <th id="brpTableName">Precision</th>
+                    <th id="brpTablePCS">Precision</th>
                     <th id="brpTableANN">ANN ID</th>
                 </tr>
             </table>
@@ -815,6 +815,9 @@ BattleRoyalContainerEntry.prototype.template = $("#brContainerEntryTemplate").ht
             width: 85%;
             margin-left: 10px;
         }
+        #brpTablePCS {
+            width: 15%;
+        }
         #brpTableANN {
             width: 15%;
         }
@@ -844,7 +847,7 @@ BattleRoyalContainerEntry.prototype.template = $("#brContainerEntryTemplate").ht
         .brpPickedANNID {
             font-size: 15.23px;
         }
-        #brpTableName, #brpTableANN {
+        #brpTableName, #brpTableANN, #brpTablePCS {
             font-size: 16px;
         }
         #brpTableName:hover {
