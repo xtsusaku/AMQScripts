@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AMQ BR Plus (Extended)
 // @namespace    https://github.com/xtsusaku/AMQScripts
-// @version      1.7.5
+// @version      1.7.6
 // @description  Upgrade Battle Royal QOL
 // @description  Alt + O to open the window or when in game click on the icon in the top right.
 // @description  ----- Main Page : -----
@@ -27,8 +27,8 @@
 // @match        https://animemusicquiz.com/*
 // @require      https://raw.githubusercontent.com/TheJoseph98/AMQ-Scripts/master/common/amqWindows.js
 // @require      https://raw.githubusercontent.com/TheJoseph98/AMQ-Scripts/master/common/amqScriptInfo.js
-// @downloadURL  https://github.com/xtsusaku/amq-scripts/raw/main/amqBRPlusExtended.user.js
-// @updateURL    https://github.com/xtsusaku/amq-scripts/raw/main/amqBRPlusExtended.user.js
+// @downloadURL  https://github.com/xtsusaku/AMQScripts/raw/main/amqBRPlusExtended.user.js
+// @updateURL    https://github.com/xtsusaku/AMQScripts/raw/main/amqBRPlusExtended.user.js
 // ==/UserScript==
 
 if (document.getElementById("loginPage")) return;
@@ -960,11 +960,18 @@ BattleRoyalContainerEntry.prototype.template = $("#brContainerEntryTemplate").ht
 
 }
 
+let annCache = JSON.parse(localStorage.getItem("xtsk.brplus")) ?? {};
+
 new Listener("new collected name entry", async (payload) => {
-    const annData = await fetch("https://cdn.animenewsnetwork.com/encyclopedia/api.xml?anime=" + payload.id).then(data => data.text());
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(annData,"text/xml");
-    const precision = xmlDoc.querySelector("anime")?.getAttribute("precision") ?? "UNKNOWN";
+    let precision = annCache[payload.id]
+    if(!precision){
+        const annData = annCache[payload.id] ??  await fetch("https://cdn.animenewsnetwork.com/encyclopedia/api.xml?anime=" + payload.id).then(data => data.text());
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(annData,"text/xml");
+        precision = xmlDoc.querySelector("anime").getAttribute("precision");
+        annCache[payload.id] = precision;
+        localStorage.setItem("xtsk.brplus", JSON.stringify(annCache))
+    }
     if(language == 0){
         if(payload.eng){
             pickedShow.push({id: payload.id, name: payload.eng, precision});
